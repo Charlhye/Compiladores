@@ -1,12 +1,13 @@
 package lexer;
 
-public class Token { 
+public class Token {
 	public final int tag; 
 	public Token(int t) {tag = t;}
 	
 	@Override
 	public String toString() {
-		return "Token [tag=" + tag + "]";
+
+		return "lexer.Token [tag=" + tag + "]";
 	}
 	
 }
