@@ -33,19 +33,40 @@ public class Lexer {
 	public Token scan() throws IOException {
 	    saltaBlancos();
 
-	    if (peek == '/'){
-	        System.in.mark(1);
-	        char peek2 = (char) System.in.read();
-	        if(peek2 == '/'){
-	            while (peek != '\n')
-                    peek = (char) System.in.read();
-                line = line + 1;
-
-	            saltaBlancos();
-            }
-            else
-                System.in.reset();
-        }
+	    if (peek == '/') {
+			System.in.mark(1);
+			char peek2 = (char) System.in.read();
+			if (peek2 == '/') { // Comentario de 1 línea
+				while (peek2 != '\n') {
+					peek2 = (char) System.in.read();
+				}
+				line += 1;
+				peek = ' ';
+				saltaBlancos();
+			}
+			else if (peek2 == '*') { // Comentarios multilínea
+				while (true) {
+					peek2 = (char) System.in.read();
+					if (peek2 == '\n') {
+						line += 1;
+					}
+					if (peek2 == '*') {
+						char peek3 = (char) System.in.read();
+						if (peek3 == '/') {
+							break;
+						}
+						else {
+							System.in.reset();
+						}
+					}
+				}
+				peek = ' ';
+				saltaBlancos();
+			}
+			else {
+				System.in.reset();
+			}
+		}
 
 		/* Para generar un entero */
 		if (Character.isDigit(peek)) {
@@ -116,9 +137,6 @@ public class Lexer {
                 }
             }
 		}
-
-
-
 
 		Token t = new Token(peek);
 		peek = ' ';
