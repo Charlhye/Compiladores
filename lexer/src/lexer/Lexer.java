@@ -1,4 +1,4 @@
-package lexer;
+﻿package lexer;
 
 import java.io.*;
 import java.util.*;
@@ -102,6 +102,17 @@ public class Lexer {
 			}
 
 
+		}
+		
+		if(peek == '.'){
+			int integer = 0;
+			int decimal = 0;
+			peek = (char) System.in.read();
+			do {
+				decimal = 10 * decimal + Character.digit(peek, 10);
+				peek = (char) System.in.read();
+			} while (Character.isDigit(peek));
+			return new MyFloat(integer, decimal);
 		}
 
 		/* Para generar un identificador */
